@@ -6,6 +6,17 @@ const { engine } = require("express-handlebars");
 const path = require('path');
 const app = express();
 const port = 3000;
+//import controller
+//
+
+//route
+const route = require('./routes');
+
+//midlleware
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use(express.json());
 
 //logo
 app.use(express.static(path.join(__dirname, 'public')));
@@ -21,14 +32,8 @@ app.engine(".hbs", engine({
 app.set("view engine", ".hbs");
 app.set("views", path.join(__dirname, "./resources/views"));
 
-//route
-app.get('/', (req, res) => {
-  res.render('home');
-})
-
-app.get('/news', (req, res) => {
-  res.render('news');
-})
+//route init
+route(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
